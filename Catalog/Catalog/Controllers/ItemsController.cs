@@ -6,6 +6,7 @@ using Catalog.Dtos;
 using Catalog.Entities;
 using Catalog.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace Catalog.Controllers
 {
@@ -17,18 +18,25 @@ namespace Catalog.Controllers
 
         private readonly IItemsRepository _repository;
 
+        private readonly ILogger<ItemsController> _logger;
+
         #endregion
 
-        public ItemsController(IItemsRepository repository)
+        public ItemsController(IItemsRepository repository, ILogger<ItemsController> logger)
         {
             _repository = repository;
+            _logger = logger;
         }
 
         [HttpGet]
         public async Task<IEnumerable<ItemDto>> GetItemsAsync()
         {
-            return (await _repository.GetItemsAsync())
-                .Select(item => item.AsDto());
+            var items = (await _repository.GetItemsAsync())
+                .Select(item => item.AsDto()).ToList();
+
+            _logger.LogInformation($"{DateTime.UtcNow:hh:mm:ss}: retrieved {items.Count} items");
+
+            return items;
         }
 
         [HttpGet("{id}")]
