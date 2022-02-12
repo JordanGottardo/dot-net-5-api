@@ -24,7 +24,7 @@ namespace Catalog.UnitTests
         public async Task GetItemAsync_WithUnexistingItem_ReturnsNotFound()
         {
             _repositoryStub.Setup(repo => repo.GetItemAsync(It.IsAny<Guid>()))
-                .ReturnsAsync((Item) null);
+                .ReturnsAsync((Item)null);
             var controller = new ItemsController(_repositoryStub.Object, _loggerStub.Object);
 
             var result = await controller.GetItemAsync(Guid.NewGuid());
@@ -42,9 +42,7 @@ namespace Catalog.UnitTests
 
             var result = await controller.GetItemAsync(Guid.NewGuid());
 
-            result.Value.Should().BeEquivalentTo(
-                expectedItem,
-                options => options.ComparingByMembers<Item>());
+            result.Value.Should().BeEquivalentTo(expectedItem);
         }
 
         #endregion
@@ -64,9 +62,7 @@ namespace Catalog.UnitTests
 
             var items = await controller.GetItemsAsync();
 
-            items.Should().BeEquivalentTo(
-                expectedItems,
-                options => options.ComparingByMembers<Item>());
+            items.Should().BeEquivalentTo(expectedItems);
         }
 
         #endregion
@@ -76,11 +72,10 @@ namespace Catalog.UnitTests
         [Fact]
         public async Task CreateItemAsync_WithItemToCreate_ReturnsCreatedItem()
         {
-            var itemToCreate = new CreateItemDto
-            {
-                Name = Guid.NewGuid().ToString(),
-                Price = _rand.Next(1000)
-            };
+            var itemToCreate = new CreateItemDto(
+                Guid.NewGuid().ToString(),
+                Guid.NewGuid().ToString(),
+                _rand.Next(1000));
             var controller = new ItemsController(_repositoryStub.Object, _loggerStub.Object);
 
             var result = await controller.CreateItemAsync(itemToCreate);
@@ -88,7 +83,7 @@ namespace Catalog.UnitTests
             var createdItem = (result.Result as CreatedAtActionResult).Value as ItemDto;
             itemToCreate.Should().BeEquivalentTo(
                 createdItem,
-                options => options.ComparingByMembers<ItemDto>().ExcludingMissingMembers());
+                options => options.ExcludingMissingMembers());
             createdItem.Id.Should().NotBeEmpty();
             createdItem.CreatedDate.Should().BeCloseTo(DateTimeOffset.UtcNow, TimeSpan.FromSeconds(1));
 
@@ -104,11 +99,11 @@ namespace Catalog.UnitTests
             var existingItem = CreateRandomItem();
             _repositoryStub.Setup(repo => repo.GetItemAsync(It.IsAny<Guid>()))
                 .ReturnsAsync(existingItem);
-            var itemToUpdate = new UpdateItemDto
-            {
-                Name = Guid.NewGuid().ToString(),
-                Price = existingItem.Price + 3
-            };
+            var itemToUpdate = new UpdateItemDto(
+              Guid.NewGuid().ToString(),
+              Guid.NewGuid().ToString(),
+              existingItem.Price + 3
+            );
             var controller = new ItemsController(_repositoryStub.Object, _loggerStub.Object);
 
             var result = await controller.UpdateItemAsync(existingItem.Id, itemToUpdate);
