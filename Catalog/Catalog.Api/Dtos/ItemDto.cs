@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Catalog.Dtos
+namespace Catalog.Api.Dtos
 {
     public record ItemDto
     {
