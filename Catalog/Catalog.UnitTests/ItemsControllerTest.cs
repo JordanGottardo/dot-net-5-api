@@ -132,6 +132,32 @@ namespace Catalog.UnitTests
 
         #endregion
 
+        #region GetItemsAsync
+
+        [Fact]
+        public async Task GetItemsAsync_WithMatchingItems_ReturnsMatchingItems()
+        {
+            var allItems = new[]
+            {
+                new Item{Name = "Potion" },
+                new Item{Name = "Antidote" },
+                new Item{Name = "Hi-Potion" }
+            };
+            const string nameToMatch = "Potion";
+
+            _repositoryStub.Setup(repo => repo.GetItemsAsync())
+                .ReturnsAsync(allItems);
+            var controller = new ItemsController(_repositoryStub.Object, _loggerStub.Object);
+
+            var foundItems = await controller.GetItemsAsync(nameToMatch);
+
+            foundItems.Should().OnlyContain(
+                item => item.Name == allItems[0].Name
+                        || item.Name == allItems[2].Name);
+        }
+
+        #endregion
+
         #region Private fields
 
         private Item CreateRandomItem()
