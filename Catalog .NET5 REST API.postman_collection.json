@@ -1,0 +1,212 @@
+{
+	"info": {
+		"_postman_id": "089a45c2-502a-4ad3-af31-64f5dc00c7fa",
+		"name": "Catalog .NET5 REST API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Healthcheck live",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{url}}/health/live",
+					"protocol": "http",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"health",
+						"live"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Healthcheck ready",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{url}}/health/ready",
+					"protocol": "http",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"health",
+						"ready"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetItems",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{url}}/items?name=potion",
+					"protocol": "http",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"items"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "potion"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetItems from Kubernetes",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"connection": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost/items",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"items"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetSingleItem",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{url}}/items/1f32b9e2-c207-4846-9ff4-cb2766c4e501",
+					"protocol": "http",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"items",
+						"1f32b9e2-c207-4846-9ff4-cb2766c4e501"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create item",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\r\n        \"name\": \"Greater Potion\",\r\n        \"description\": \"A potion\",\r\n        \"price\": 40\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{url}}/items",
+					"protocol": "http",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"items"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit item",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Medium Potion\",\r\n    \"price\": 12\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{url}}/items",
+					"protocol": "http",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"items"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete item",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://{{url}}/items/bb691d19-42b0-49c6-9ef4-20e81030632a",
+					"protocol": "http",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"items",
+						"bb691d19-42b0-49c6-9ef4-20e81030632a"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": "localhost:5000"
+		}
+	]
+}
